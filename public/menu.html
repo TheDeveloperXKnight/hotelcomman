@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOID HOTEL Menu — Culinary Excellence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-elevated: #1c1c1c;
+      --nav-bg: #0d0d0d;
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-disabled: #3a3a3a;
+      --border-subtle: #1c1c1c;
+      --border-interactive: #222222;
+      --white: #ffffff;
+      --danger: #ff4444;
+    }
+
+    html { background: var(--bg); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.65; overflow-x: hidden; }
+    body { background: var(--bg); overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+    /* NAVBAR */
+    #navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-logo { font-weight: 700; font-size: 18px; letter-spacing: -0.03em; color: var(--white); text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-weight: 400; font-size: 14px; color: #888888; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: var(--white); color: #000; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 14px; cursor: pointer; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero { height: 50vh; background: linear-gradient(135deg, #1c1c1c 0%, #0d0d0d 100%); display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 24px; }
+    .hero-label { display: inline-block; font-weight: 600; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; margin-bottom: 16px; }
+    .hero-h1 { font-weight: 700; font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.03em; color: var(--white); margin-bottom: 16px; line-height: 1.1; }
+    .hero-sub { font-size: 18px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; }
+
+    /* SECTION */
+    .section { padding: 96px 48px; background: var(--bg); }
+    .section-label { font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; margin-bottom: 16px; display: block; }
+    .section-heading { font-weight: 700; font-size: clamp(32px, 4vw, 52px); letter-spacing: -0.03em; color: var(--white); margin-bottom: 48px; line-height: 1.1; text-align: center; }
+
+    /* MENU CATEGORIES */
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; }
+    .menu-category { background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 32px; opacity: 0; transform: translateY(60px); }
+    .menu-category-title { font-weight: 600; font-size: 22px; color: var(--white); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .menu-category-icon { width: 28px; height: 28px; color: var(--white); }
+
+    /* MENU ITEMS */
+    .menu-item { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border-interactive); }
+    .menu-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
+    .menu-item-name { font-weight: 600; font-size: 16px; color: var(--text-primary); }
+    .menu-item-price { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--white); white-space: nowrap; }
+    .menu-item-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* FOOTER */
+    #footer { background: var(--bg); border-top: 1px solid var(--border-subtle); padding: 48px; text-align: center; }
+    .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-disabled); }
+
+    @media (max-width: 900px) {
+      #navbar { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .section { padding: 48px 24px; }
+      .menu-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="/" class="nav-logo">VOID HOTEL</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/menu.html">Menu</a></li>
+    <li><a href="/#rooms">Rooms</a></li>
+    <li><a href="/#amenities">Amenities</a></li>
+  </ul>
+  <a href="/" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <span class="hero-label">Culinary Excellence</span>
+    <h1 class="hero-h1">The Chef's Table</h1>
+    <p class="hero-sub">Three Michelin-starred cuisine, engineered to transcend expectation.</p>
+  </div>
+</section>
+
+<!-- MENU SECTIONS -->
+<section class="section">
+  <span class="section-label">À La Carte</span>
+  <h2 class="section-heading">Appetizers</h2>
+
+  <div class="menu-grid">
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m0 0h6M6 12a6 6 0 1112 0 6 6 0 01-12 0z"/></svg>
+        Composed Vegetables
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Charred Beet & Black Truffle</span>
+          <span class="menu-item-price">$28</span>
+        </div>
+        <div class="menu-item-desc">Roasted golden beet, truffle soil, edible ash, truffle oil essence.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Asparagus with Aged Parmesan</span>
+          <span class="menu-item-price">$24</span>
+        </div>
+        <div class="menu-item-desc">Spring asparagus, 36-month Parmigiano-Reggiano, brown butter.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">White Corn Bisque</span>
+          <span class="menu-item-price">$22</span>
+        </div>
+        <div class="menu-item-desc">Sweet corn reduction, cornsilk foam, corn oil caviar, microgreens.</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+        Seafood
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Scottish Langoustine</span>
+          <span class="menu-item-price">$42</span>
+        </div>
+        <div class="menu-item-desc">Seasonal langoustine, lemon foam, fennel powder, citrus air.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Hokkaido Scallop</span>
+          <span class="menu-item-price">$38</span>
+        </div>
+        <div class="menu-item-desc">Hand-dived scallops, uni butter, sea urchin sauce, ocean mineral salts.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Wild Halibut en Croute</span>
+          <span class="menu-item-price">$45</span>
+        </div>
+        <div class="menu-item-desc">Whole halibut in salt crust, brown butter, fresh herbs, seasonal vegetables.</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Meat & Game
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Wagyu A5 Beef</span>
+          <span class="menu-item-price">$68</span>
+        </div>
+        <div class="menu-item-desc">Japanese A5 Wagyu, precision-aged, seared, miso jus, foraged mushrooms.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Venison Loin</span>
+          <span class="menu-item-price">$54</span>
+        </div>
+        <div class="menu-item-desc">Scottish venison, cherry gastrique, root vegetable purée, rosemary oil.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Duck Breast Parfait</span>
+          <span class="menu-item-price">$32</span>
+        </div>
+        <div class="menu-item-desc">Foie gras mousse, pistachio tuile, porto reduction, brioche crisps.</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
+        Desserts
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Dark Chocolate Sphere</span>
+          <span class="menu-item-price">$20</span>
+        </div>
+        <div class="menu-item-desc">70% Valrhona chocolate shell, passion fruit center, vanilla bean ice cream.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Lemon Tart</span>
+          <span class="menu-item-price">$18</span>
+        </div>
+        <div class="menu-item-desc">Sicilian lemon curd, almond sablé, Italian meringue, candied citrus.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Matcha Panna Cotta</span>
+          <span class="menu-item-price">$19</span>
+        </div>
+        <div class="menu-item-desc">Japanese matcha, silken texture, white chocolate, green tea tuile.</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.348 14.651a3.75 3.75 0 002.53 1.029c1.618 0 2.75-1.094 2.75-2.562 0-1.362-.771-2.126-2.236-2.126-.977 0-1.745.46-1.745 1.188 0 .807.588 1.395 1.571 1.395.744 0 1.348-.368 1.348-.92 0-.184-.032-.368-.112-.552m-5.582 2.05A6 6 0 1118 3m-6 13.5H9m3 0h3"/></svg>
+        Wine Pairings
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Burgundy Selection</span>
+          <span class="menu-item-price">$85/glass</span>
+        </div>
+        <div class="menu-item-desc">Curated selection from Côte d'Or, precision temperature control.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Champagne Blanc de Blanc</span>
+          <span class="menu-item-price">$65/glass</span>
+        </div>
+        <div class="menu-item-desc">Krug Clos d'Ambonnay, aged 12 years, mineral complexity, oyster notes.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Sommelier's Discretion</span>
+          <span class="menu-item-price">Market</span>
+        </div>
+        <div class="menu-item-desc">Rare selections, personal consultation with our wine master included.</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <div class="menu-category-title">
+        <svg class="menu-category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.97 11.03a1 1 0 00-1.4-1.4L7.37 16.2a1 1 0 000 1.414l6.2 6.2a1 1 0 001.414-1.414L9.19 17l5.78-5.97z"/></svg>
+        Beverages
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Oolong Tea</span>
+          <span class="menu-item-price">$12</span>
+        </div>
+        <div class="menu-item-desc">Aged Taiwanese oolong, oxidation perfected, floral finish.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Coffee Selection</span>
+          <span class="menu-item-price">$8</span>
+        </div>
+        <div class="menu-item-desc">Single-origin pour-over, precision temperature, custom roast.</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <span class="menu-item-name">Japanese Highball</span>
+          <span class="menu-item-price">$16</span>
+        </div>
+        <div class="menu-item-desc">Yamazaki 12yr whisky, hand-carved ice, soda, precision ratio.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <p class="footer-copy">© 2026 VOID HOTEL. All rights reserved. Est. 1987 · A Place of Silence</p>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Menu categories stagger fade up
+  gsap.to('.menu-category', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.12,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.menu-grid', start: 'top 75%' }
+  });
+
+  // Section heading fade up
+  gsap.from('.section-heading', {
+    y: 40,
+    opacity: 0,
+    duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.section-heading', start: 'top 85%' }
+  });
+</script>
+</body>
+</html>

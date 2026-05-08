@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOID HOTEL — Where Silence Becomes Luxury</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-elevated: #1c1c1c;
+      --nav-bg: #0d0d0d;
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-disabled: #3a3a3a;
+      --border-subtle: #1c1c1c;
+      --border-interactive: #222222;
+      --white: #ffffff;
+      --danger: #ff4444;
+      --font-heading: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    body {
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+    /* CUSTOM CURSOR */
+    #cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+    }
+
+    /* PAGE LOAD OVERLAY */
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #loader-logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      opacity: 0;
+    }
+
+    /* NAVBAR */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s, border-color 0.3s, padding 0.3s;
+    }
+    #navbar.scrolled {
+      background: var(--nav-bg);
+      border-bottom-color: var(--border-subtle);
+      padding: 16px 48px;
+    }
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 14px;
+      color: #888888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--white);
+      color: #000;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: inset(0 0 0 0);
+    }
+    #hero-video-wrap {
+      position: absolute;
+      inset: -30%;
+      z-index: 0;
+    }
+    #hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #hero-bg-fallback {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 70%, #1c1c1c 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 30%, #111111 0%, transparent 55%),
+        #000000;
+      animation: heroAmbient 12s ease-in-out infinite alternate;
+    }
+    @keyframes heroAmbient {
+      0%   { filter: brightness(0.7); }
+      50%  { filter: brightness(1.0); }
+      100% { filter: brightness(0.8); }
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 900px;
+      padding: 0 24px;
+      clip-path: inset(100% 0 0 0);
+    }
+    .hero-label {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 24px;
+    }
+    .hero-h1 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(48px, 8vw, 96px);
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-primary {
+      background: var(--white);
+      color: #000;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--text-disabled);
+      padding: 12px 32px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-secondary:hover { border-color: #888888; }
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 64px;
+      background: var(--white);
+      animation: scrollPulse 1.8s ease-in-out infinite;
+      transform-origin: top center;
+    }
+    @keyframes scrollPulse {
+      0% { transform: scaleY(0); opacity: 1; }
+      100% { transform: scaleY(1); opacity: 0; }
+    }
+
+    /* STATS BAR */
+    #stats {
+      background: var(--nav-bg);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 40px 48px;
+    }
+    .stats-inner {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 24px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .stat-label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+    }
+
+    /* SECTION COMMON */
+    .section-label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .section-heading {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 48px;
+      line-height: 1.1;
+    }
+
+    /* ROOMS */
+    #rooms {
+      background: var(--bg);
+      padding: 96px 48px;
+    }
+    .rooms-header { text-align: center; }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .room-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    .room-card:hover {
+      border-color: #2a2a2a;
+      transform: translateY(-4px);
+    }
+    .room-image-wrap {
+      height: 260px;
+      overflow: hidden;
+      position: relative;
+    }
+    .room-image-wrap img {
+      width: 100%;
+      height: 130%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.75) saturate(0.4);
+      transition: filter 0.4s ease;
+    }
+    .room-card:hover .room-image-wrap img {
+      filter: brightness(0.8) saturate(0.5);
+    }
+    .room-body {
+      padding: 24px;
+    }
+    .room-name {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .room-desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.65;
+    }
+    .room-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .room-price {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--white);
+    }
+    .btn-reserve {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--text-disabled);
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-reserve:hover { border-color: #888888; }
+
+    /* QUOTE */
+    #quote {
+      position: relative;
+      background: var(--bg);
+      padding: 120px 48px;
+      overflow: hidden;
+    }
+    .quote-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .quote-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .quote-text {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 56px);
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 32px;
+    }
+    .quote-attr {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* AMENITIES */
+    #amenities {
+      background: var(--bg);
+      padding: 96px 48px;
+    }
+    .amenities-header { text-align: center; }
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .amenity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 32px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+    .amenity-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .amenity-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .amenity-name {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .amenity-desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* GALLERY */
+    #gallery {
+      padding: 96px 0 0 0;
+    }
+    .gallery-header {
+      padding: 0 48px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .gallery-pin-wrapper {
+      overflow: hidden;
+    }
+    .gallery-track {
+      display: flex;
+      gap: 16px;
+      padding: 0 48px;
+    }
+    .gallery-item {
+      flex-shrink: 0;
+      height: 70vh;
+      width: auto;
+      overflow: hidden;
+      border-radius: 6px;
+    }
+    .gallery-item img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      display: block;
+      min-width: 500px;
+      transform: scale(1.05);
+      transition: transform 0.6s ease, filter 0.4s ease;
+      filter: brightness(0.8) saturate(0.35);
+    }
+    .gallery-item:hover img {
+      filter: brightness(0.9) saturate(0.55);
+    }
+
+    /* BOOKING */
+    #booking {
+      background: var(--nav-bg);
+      border-top: 1px solid var(--border-subtle);
+      padding: 96px 48px;
+    }
+    .booking-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .booking-heading {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .booking-form {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      min-width: 160px;
+    }
+    .form-field label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+    }
+    .form-field input,
+    .form-field select {
+      background: var(--surface);
+      border: 1px solid var(--border-interactive);
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-field input::placeholder { color: var(--text-disabled); }
+    .form-field input:focus,
+    .form-field select:focus { border-color: var(--white); }
+    .form-field select { cursor: pointer; }
+    .form-field select option { background: var(--surface); }
+    .btn-check {
+      background: var(--white);
+      color: #000;
+      border: none;
+      padding: 10px 32px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+      height: 42px;
+      align-self: flex-end;
+    }
+    .btn-check:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    #footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border-subtle);
+      padding: 64px 48px 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 280px;
+    }
+    .footer-col-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: #888888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-disabled);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      #navbar { padding: 16px 24px; }
+      #navbar.scrolled { padding: 12px 24px; }
+      .nav-links { display: none; }
+      .rooms-grid { grid-template-columns: 1fr; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .booking-form { flex-direction: column; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .stats-inner { flex-wrap: wrap; gap: 32px; }
+      #hero { padding: 0 24px; }
+      .gallery-item img { min-width: 320px; }
+      #rooms, #amenities, #booking, #quote { padding-left: 24px; padding-right: 24px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+    }
+
+    /* UTILITY */
+    .container { max-width: 1200px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="page-loader">
+  <span id="loader-logo">VOID HOTEL</span>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">VOID HOTEL</a>
+  <ul class="nav-links">
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="/menu.html">Menu</a></li>
+    <li><a href="#amenities">Amenities</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-video-wrap">
+    <video id="hero-video" autoplay muted loop playsinline crossorigin="anonymous">
+      <source src="https://cdn.coverr.co/videos/coverr-a-luxury-hotel-lobby-6281/1080p.mp4" type="video/mp4" />
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-hotel-room-at-night-673-large.mp4" type="video/mp4" />
+    </video>
+    <!-- Fallback: dark animated background -->
+    <div id="hero-bg-fallback"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content" id="hero-content">
+    <span class="hero-label">Luxury Redefined</span>
+    <h1 class="hero-h1">Where Silence<br>Becomes Luxury</h1>
+    <p class="hero-sub">An experience engineered for those who require perfection.</p>
+    <div class="hero-buttons">
+      <a href="#rooms" class="btn-primary">Explore Rooms</a>
+      <a href="#" class="btn-secondary">Watch Film</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-number" data-target="142" data-suffix="">0</span>
+      <span class="stat-label">Rooms</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="3" data-suffix="">0</span>
+      <span class="stat-label">Michelin Stars</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-static="24/7">24/7</span>
+      <span class="stat-label">Concierge</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="1987" data-suffix="">0</span>
+      <span class="stat-label">Est.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ROOMS -->
+<section id="rooms">
+  <div class="container">
+    <div class="rooms-header">
+      <span class="section-label">Accommodations</span>
+      <h2 class="section-heading">Spaces Designed for Silence</h2>
+    </div>
+    <div class="rooms-grid">
+      <a href="/room-void-suite.html" style="text-decoration:none;color:inherit;">
+        <div class="room-card">
+          <div class="room-image-wrap">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80&auto=format&sat=-80&bri=-20" alt="Void Suite" />
+          </div>
+          <div class="room-body">
+            <div class="room-name">The Void Suite</div>
+            <p class="room-desc">A minimalist sanctuary where darkness and silence converge. Floor-to-ceiling obsidian panels absorb every distraction.</p>
+            <div class="room-footer">
+              <span class="room-price">From $480 / night</span>
+              <button class="btn-reserve">Reserve</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      <a href="/room-penthouse-noir.html" style="text-decoration:none;color:inherit;">
+        <div class="room-card">
+          <div class="room-image-wrap">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80&auto=format&sat=-60" alt="Penthouse Noir" />
+          </div>
+          <div class="room-body">
+            <div class="room-name">Penthouse Noir</div>
+            <p class="room-desc">The pinnacle of engineered solitude. Private terraces overlooking the city's silence from above the noise.</p>
+            <div class="room-footer">
+              <span class="room-price">From $1,200 / night</span>
+              <button class="btn-reserve">Reserve</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      <a href="/room-shadow-loft.html" style="text-decoration:none;color:inherit;">
+        <div class="room-card">
+          <div class="room-image-wrap">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80&auto=format&sat=-70" alt="Shadow Loft" />
+          </div>
+          <div class="room-body">
+            <div class="room-name">Shadow Loft</div>
+            <p class="room-desc">Open-plan architecture with ambient lighting calibrated to your circadian rhythm. Pure, uninterrupted rest.</p>
+            <div class="room-footer">
+              <span class="room-price">From $720 / night</span>
+              <button class="btn-reserve">Reserve</button>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="quote-bg" id="quote-bg"></div>
+  <div class="quote-content" id="quote-content">
+    <p class="quote-text">"Luxury is not about abundance. It is about the absence of noise."</p>
+    <span class="quote-attr">— Void Hotel Philosophy</span>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section id="amenities">
+  <div class="container">
+    <div class="amenities-header">
+      <span class="section-label">Amenities</span>
+      <h2 class="section-heading">Every Detail. Considered.</h2>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 12h18M12 3c-4.97 5-4.97 13 0 18M12 3c4.97 5 4.97 13 0 18M12 3v18"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">Infinity Pool</div>
+          <p class="amenity-desc">Suspended at the edge of the sky. Temperature-controlled, dawn-to-dusk access.</p>
+        </div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M12 14a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">Private Spa</div>
+          <p class="amenity-desc">Hydrotherapy chambers and bespoke treatments. Silence as therapy.</p>
+        </div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="6" cy="6" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="6" cy="18" r="1.5"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">Chef's Table</div>
+          <p class="amenity-desc">Three Michelin-starred cuisine prepared in absolute precision. Reservation required.</p>
+        </div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">Helipad Access</div>
+          <p class="amenity-desc">Rooftop helipad for arrivals that bypass the ordinary. Available 24 hours.</p>
+        </div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">Sommelier</div>
+          <p class="amenity-desc">A curated cellar of 2,400 selections. Personal pairing consultation on request.</p>
+        </div>
+      </div>
+      <div class="amenity-item">
+        <div class="amenity-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <div class="amenity-name">24h Butler</div>
+          <p class="amenity-desc">Discreet, unobtrusive personal service. Your needs anticipated before spoken.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-heading" style="margin-bottom:0">The Visual Language of Void</h2>
+  </div>
+  <div class="gallery-pin-wrapper" id="gallery-wrapper">
+    <div class="gallery-track" id="gallery-track">
+      <div class="gallery-item">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80&auto=format&sat=-50" alt="Hotel Lobby" />
+      </div>
+      <div class="gallery-item">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80&auto=format&sat=-80&bri=-10" alt="Luxury Room" />
+      </div>
+      <div class="gallery-item">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&q=80&auto=format&sat=-60" alt="Hotel Pool" />
+      </div>
+      <div class="gallery-item">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80&auto=format&sat=-50" alt="Restaurant" />
+      </div>
+      <div class="gallery-item">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80&auto=format&sat=-60" alt="Spa" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-inner">
+    <h2 class="booking-heading">Reserve Your Void</h2>
+    <form class="booking-form" onsubmit="return false;">
+      <div class="form-field">
+        <label>Check-in</label>
+        <input type="date" placeholder="YYYY-MM-DD" />
+      </div>
+      <div class="form-field">
+        <label>Check-out</label>
+        <input type="date" placeholder="YYYY-MM-DD" />
+      </div>
+      <div class="form-field">
+        <label>Room Type</label>
+        <select>
+          <option value="" disabled selected>Select room</option>
+          <option>The Void Suite</option>
+          <option>Penthouse Noir</option>
+          <option>Shadow Loft</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Guests</label>
+        <select>
+          <option>1 Guest</option>
+          <option>2 Guests</option>
+          <option>3 Guests</option>
+          <option>4 Guests</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-check">Check Availability</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">VOID HOTEL</div>
+      <p class="footer-tagline">Engineered for those who require<br>the perfection of silence.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="#rooms">Rooms</a></li>
+        <li><a href="#amenities">Amenities</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#booking">Book a Stay</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Twitter / X</a></li>
+        <li><a href="#">Press Inquiries</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 VOID HOTEL. All rights reserved.</span>
+    <span class="footer-copy">Est. 1987 · A Place of Silence</span>
+  </div>
+</footer>
+
+<!-- GSAP CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  // ─── CUSTOM CURSOR ───────────────────────────────────────────
+  const cursorDot  = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0.05 });
+    gsap.to(cursorRing, { x: mouseX, y: mouseY, duration: 0.35, ease: 'power2.out' });
+  });
+
+  // ─── PAGE LOAD ANIMATION ─────────────────────────────────────
+  const tl = gsap.timeline();
+  tl.to('#loader-logo', { opacity: 1, duration: 0.8, ease: 'power2.out' })
+    .to('#loader-logo', { opacity: 0, duration: 0.5, delay: 0.5, ease: 'power2.in' })
+    .to('#page-loader', { opacity: 0, duration: 0.5, ease: 'power2.in',
+      onComplete: () => { document.getElementById('page-loader').style.display = 'none'; }
+    })
+    .to('#hero-content', {
+      clipPath: 'inset(0% 0 0 0)',
+      duration: 1,
+      ease: 'power4.out'
+    }, '-=0.2');
+
+  // ─── SMOOTH SCROLL (nav links) ───────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = link.getAttribute('href');
+      if (target && target !== '#') {
+        e.preventDefault();
+        const el = document.querySelector(target);
+        if (el) gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: 'power3.inOut' });
+      }
+    });
+  });
+
+  // ─── NAVBAR SCROLL ───────────────────────────────────────────
+  const navbar = document.getElementById('navbar');
+  ScrollTrigger.create({
+    start: '80px top',
+    onEnter: () => navbar.classList.add('scrolled'),
+    onLeaveBack: () => navbar.classList.remove('scrolled')
+  });
+
+  // ─── HERO PARALLAX ───────────────────────────────────────────
+  gsap.to('#hero-video-wrap', {
+    yPercent: 30,
+    ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  // ─── STATS COUNT UP ──────────────────────────────────────────
+  const statNums = document.querySelectorAll('.stat-number[data-target]');
+  statNums.forEach(el => {
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || '';
+    ScrollTrigger.create({
+      trigger: '#stats',
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        gsap.to({ val: 0 }, {
+          val: target,
+          duration: 2,
+          ease: 'power2.out',
+          onUpdate: function() { el.textContent = Math.round(this.targets()[0].val) + suffix; }
+        });
+      }
+    });
+  });
+
+  // ─── ROOM CARDS STAGGER FADE UP ──────────────────────────────
+  gsap.to('.room-card', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.rooms-grid', start: 'top 75%' }
+  });
+
+  // ─── ROOM CARD IMAGE PARALLAX ────────────────────────────────
+  document.querySelectorAll('.room-image-wrap').forEach(wrap => {
+    const img = wrap.querySelector('img');
+    gsap.to(img, {
+      yPercent: -15,
+      ease: 'none',
+      scrollTrigger: { trigger: wrap, start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  });
+
+  // ─── QUOTE SECTION PARALLAX BG + PIN ─────────────────────────
+  gsap.to('#quote-bg', {
+    yPercent: -10,
+    ease: 'none',
+    scrollTrigger: { trigger: '#quote', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+
+  ScrollTrigger.create({
+    trigger: '#quote-content',
+    start: 'top 40%',
+    end: '+=200',
+    pin: true,
+    pinSpacing: false
+  });
+
+  // ─── AMENITIES STAGGER LEFT/RIGHT ────────────────────────────
+  document.querySelectorAll('.amenity-item').forEach((item, i) => {
+    gsap.fromTo(item,
+      { x: i % 2 === 0 ? -60 : 60, opacity: 0 },
+      {
+        x: 0, opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: item, start: 'top 82%' }
+      }
+    );
+  });
+
+  // ─── GALLERY HORIZONTAL SCROLL ───────────────────────────────
+  function initGallery() {
+    const isMobile = window.innerWidth <= 900;
+    if (isMobile) {
+      document.getElementById('gallery-track').style.overflowX = 'auto';
+      return;
+    }
+
+    const track = document.getElementById('gallery-track');
+    const wrapper = document.getElementById('gallery-wrapper');
+    const totalWidth = track.scrollWidth;
+    const viewportWidth = window.innerWidth;
+    const scrollAmount = totalWidth - viewportWidth + 96;
+
+    gsap.to(track, {
+      x: -scrollAmount,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrapper,
+        start: 'top top',
+        end: () => `+=${scrollAmount}`,
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1
+      }
+    });
+  }
+
+  // Gallery image scale on enter
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    gsap.to(img, {
+      scale: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: img, start: 'top 90%' }
+    });
+  });
+
+  // ─── SECTION TEXT FADE UP ────────────────────────────────────
+  const fadeTargets = [
+    '.rooms-header .section-label',
+    '.rooms-header .section-heading',
+    '.amenities-header .section-label',
+    '.amenities-header .section-heading',
+    '.gallery-header .section-label',
+    '.gallery-header .section-heading',
+    '.booking-heading',
+    '.footer-logo',
+  ];
+
+  fadeTargets.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      gsap.from(el, {
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 85%' }
+      });
+    });
+  });
+
+  // ─── INIT ────────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    initGallery();
+    ScrollTrigger.refresh();
+  });
+
+  window.addEventListener('resize', () => {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+    location.reload();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Void Suite — VOID HOTEL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-elevated: #1c1c1c;
+      --nav-bg: #0d0d0d;
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-disabled: #3a3a3a;
+      --border-subtle: #1c1c1c;
+      --border-interactive: #222222;
+      --white: #ffffff;
+    }
+
+    html { background: var(--bg); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.65; overflow-x: hidden; }
+    body { background: var(--bg); overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; }
+
+    /* NAVBAR */
+    #navbar { position: sticky; top: 0; z-index: 1000; padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; background: var(--nav-bg); border-bottom: 1px solid var(--border-subtle); }
+    .nav-logo { font-weight: 700; font-size: 18px; letter-spacing: -0.03em; color: var(--white); text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-weight: 400; font-size: 14px; color: #888888; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: var(--white); color: #000; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 14px; cursor: pointer; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO IMAGE */
+    .hero-image { width: 100%; height: 60vh; object-fit: cover; display: block; filter: brightness(0.75) saturate(0.4); }
+
+    /* CONTENT */
+    .content { max-width: 1200px; margin: 0 auto; padding: 96px 48px; }
+    .section-label { font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; margin-bottom: 16px; }
+    .room-title { font-weight: 700; font-size: clamp(40px, 6vw, 64px); letter-spacing: -0.03em; color: var(--white); margin-bottom: 24px; line-height: 1.1; }
+    .room-price { font-family: 'JetBrains Mono', monospace; font-size: 24px; color: var(--white); margin-bottom: 48px; }
+
+    /* DESCRIPTION */
+    .room-description { font-size: 18px; color: var(--text-secondary); line-height: 1.8; max-width: 800px; margin-bottom: 64px; }
+
+    /* FEATURES GRID */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 64px; max-width: 900px; }
+    .feature-card { background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 32px; }
+    .feature-title { font-weight: 600; font-size: 18px; color: var(--white); margin-bottom: 12px; }
+    .feature-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* AMENITIES LIST */
+    .amenities-section { margin-bottom: 64px; }
+    .amenities-heading { font-weight: 600; font-size: 22px; color: var(--white); margin-bottom: 24px; }
+    .amenities-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 800px; }
+    .amenity-item { display: flex; gap: 12px; align-items: flex-start; }
+    .amenity-check { width: 20px; height: 20px; color: var(--white); flex-shrink: 0; }
+    .amenity-text { font-size: 14px; color: var(--text-secondary); }
+
+    /* CTA */
+    .cta-section { background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 48px; text-align: center; }
+    .cta-heading { font-weight: 700; font-size: 28px; color: var(--white); margin-bottom: 24px; }
+    .btn-reserve { background: var(--white); color: #000; border: none; padding: 14px 48px; border-radius: 4px; font-weight: 700; font-size: 16px; cursor: pointer; transition: opacity 0.2s; }
+    .btn-reserve:hover { opacity: 0.85; }
+
+    /* GALLERY */
+    .gallery { margin: 64px 0; }
+    .gallery-heading { font-weight: 600; font-size: 22px; color: var(--white); margin-bottom: 24px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .gallery-item { aspect-ratio: 4/3; overflow: hidden; border-radius: 6px; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) saturate(0.35); transition: filter 0.4s; }
+    .gallery-item:hover img { filter: brightness(0.9) saturate(0.5); }
+
+    /* FOOTER */
+    #footer { background: var(--bg); border-top: 1px solid var(--border-subtle); padding: 48px; text-align: center; }
+    .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-disabled); }
+
+    @media (max-width: 900px) {
+      #navbar { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .content { padding: 48px 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .amenities-list { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="/" class="nav-logo">VOID HOTEL</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/menu.html">Menu</a></li>
+    <li><a href="/#rooms">Rooms</a></li>
+    <li><a href="/#amenities">Amenities</a></li>
+  </ul>
+  <a href="/" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO IMAGE -->
+<img class="hero-image" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&q=80&auto=format&sat=-80&bri=-10" alt="The Void Suite" />
+
+<!-- CONTENT -->
+<div class="content">
+  <span class="section-label">Accommodations</span>
+  <h1 class="room-title">The Void Suite</h1>
+  <div class="room-price">From $480 / night</div>
+
+  <p class="room-description">
+    A minimalist sanctuary where darkness and silence converge. Floor-to-ceiling obsidian panels absorb every distraction,
+    creating an engineered void of acoustic perfection. This is not a room—it is an experience of absolute tranquility.
+  </p>
+
+  <!-- FEATURES -->
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-title">Dimensions</div>
+      <div class="feature-desc">500 sq ft of precisely measured space. Every angle calculated for maximum serenity.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title">Silence Technology</div>
+      <div class="feature-desc">Triple-layer soundproofing. Acoustic panels engineered to -35dB absorption coefficient.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title">Bed System</div>
+      <div class="feature-desc">Custom Duxiana mattress, Swiss linen, memory foam pillow. Engineered for REM optimization.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title">Lighting Control</div>
+      <div class="feature-desc">Circadian rhythm alignment. OLED panels calibrate at 2700K-3000K for optimal sleep.</div>
+    </div>
+  </div>
+
+  <!-- AMENITIES -->
+  <div class="amenities-section">
+    <h2 class="amenities-heading">Room Amenities</h2>
+    <div class="amenities-list">
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">Marble en-suite bathroom</span>
+      </div>
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">Premium toiletries</span>
+      </div>
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">High-speed WiFi</span>
+      </div>
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">Personalized minibar</span>
+      </div>
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">In-room spa access</span>
+      </div>
+      <div class="amenity-item">
+        <svg class="amenity-check" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        <span class="amenity-text">24/7 Butler service</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery">
+    <h2 class="gallery-heading">Room Gallery</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&auto=format&sat=-80" alt="Bedroom" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&auto=format&sat=-80" alt="Bathroom" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&auto=format&sat=-80" alt="Living Area" />
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2 class="cta-heading">Ready to Experience Silence?</h2>
+    <button class="btn-reserve" onclick="alert('Redirect to booking system')">Reserve The Void Suite</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <p class="footer-copy">© 2026 VOID HOTEL. All rights reserved. Est. 1987 · A Place of Silence</p>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Feature cards stagger
+  gsap.to('.feature-card', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.features-grid', start: 'top 75%' }
+  });
+
+  gsap.set('.feature-card', { opacity: 0, y: 40 });
+
+  // Gallery images
+  gsap.to('.gallery-item img', {
+    opacity: 1,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.gallery-grid', start: 'top 80%' }
+  });
+</script>
+</body>
+</html>
